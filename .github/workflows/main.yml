@@ -1,0 +1,20 @@
+name: Setup League Client3
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  setup-league-client:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup League Client
+        uses: ./
+        with:
+          username: ${{ secrets.LOL_USERNAME }}
+          password: ${{ secrets.LOL_PASSWORD }}
+          region: "NA"
