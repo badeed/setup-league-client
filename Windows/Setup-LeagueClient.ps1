@@ -180,12 +180,27 @@ Try {
 
 }
 
+#$lockContent = Get-Content $LCU_LOCKFILE -Raw
+#$lockContent = $lockContent.Split(':')
+#$port = $lockContent[2];
+#$pass = $lockContent[3];
+#Write-Host "::set-output name=lcu-password::$pass"
+#Write-Host "::set-output name=lcu-port::$port"
+#Write-Host "::set-output name=lcu-directory::$LCU_DIR"
+
+#Write-Host 'Success!'
+
 $lockContent = Get-Content $LCU_LOCKFILE -Raw
 $lockContent = $lockContent.Split(':')
 $port = $lockContent[2];
 $pass = $lockContent[3];
-Write-Host "::set-output name=lcu-password::$pass"
-Write-Host "::set-output name=lcu-port::$port"
-Write-Host "::set-output name=lcu-directory::$LCU_DIR"
+
+# New way of setting outputs using environment files
+$envFile = $env:GITHUB_ENV
+
+# Append the new environment variables to the GITHUB_ENV file
+"LCU_PASSWORD=$pass" | Out-File -FilePath $envFile -Append
+"LCU_PORT=$port" | Out-File -FilePath $envFile -Append
+"LCU_DIRECTORY=$LCU_DIR" | Out-File -FilePath $envFile -Append
 
 Write-Host 'Success!'
